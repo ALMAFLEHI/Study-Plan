@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="30bac868-dd34-4387-b075-430e1efdc9fa.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Coding Study Plan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Body and Background */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(270deg, #0f0c29, #302b63, #24243e, #3b3b98, #5f2c82);
+      background-size: 1200% 1200%;
+      margin: 0;
+      padding: 20px;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      animation: moveBackground 8s ease infinite, fadeInBody 1.5s ease-in;
+    }
+
+    /* Floating Stars */
+    #stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #stars::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(white 1px, transparent 1px);
+      background-size: 50px 50px, 100px 100px;
+      animation: animateStars 100s linear infinite;
+      opacity: 0.3;
+    }
+
+    /* Header and Title */
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: glow 4s ease-in-out infinite alternate;
+    }
+    h2 {
+      background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: slideFadeIn 1s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sections */
+    .routine, .pomodoro, .weekly-plan, .notes-section, .study-table, .productivity-stats {
+      background: #1b1b2f;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #6c63ff;
+      box-shadow: 0 0 25px rgba(108, 99, 255, 0.2);
+      margin-bottom: 30px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: sectionFade 1s ease forwards;
+      animation-delay: 0.5s;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #1b1b2f;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+    th {
+      background: #6c63ff;
+      color: #fff;
+    }
+    td[contenteditable="true"] {
+      background: #2c2c3e;
+      cursor: text;
+      color: #e0e0e0;
+    }
+    td[contenteditable="true"]:hover {
+      background: #3c3c4e;
+    }
+
+    /* Buttons */
+    button {
+      margin: 10px 5px 0 0;
+      background: #6c63ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #6c63ff, 0 0 20px #6c63ff;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      background: #5a54e8;
+      box-shadow: 0 0 15px #6c63ff, 0 0 30px #6c63ff;
+      transform: scale(1.05);
+    }
+
+    /* Back to Top Button */
+#backToTop {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 99;
+  background: #6c63ff;
+  border: none;
+  outline: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #6c63ff, 0 0 20px #6c63ff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, background 0.3s;
+}
+#backToTop:hover {
+  background: #5a54e8;
+  transform: scale(1.1);
+}
+
+
+    /* Other Elements */
+    .progress-checkbox {
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+    #timer {
+      font-size: 36px;
+      text-align: center;
+      margin-top: 20px;
+      animation: pulse 1s infinite;
+    }
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      background: #2c2c3e;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-size: 16px;
+      resize: vertical;
+    }
+    #productivityBar {
+      width: 100%;
+      background: #333;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    #progressFill {
+      height: 20px;
+      width: 0%;
+      background: #6c63ff;
+      border-radius: 5px;
+      transition: width 0.5s ease;
+    }
+
+    /* Animations */
+    @keyframes fadeInBody {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes moveBackground {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes animateStars {
+      0% { background-position: 0 0, 0 0; }
+      100% { background-position: 1000px 500px, 500px 1000px; }
+    }
+    @keyframes slideFadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes sectionFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    @keyframes glow {
+      0% { text-shadow: 0 0 8px #a18cd1, 0 0 16px #fbc2eb, 0 0 1px #fbc2eb; }
+      50% { text-shadow: 0 0 10px #6c63ff, 0 0 20px #9575cd, 0 0 1px #9575cd; }
+      100% { text-shadow: 0 0 8px #a18cd1, 0 0 16px #fbc2eb, 0 0 1px #fbc2eb; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      h2 {
+        font-size: 1.4rem;
+      }
+      table, th, td {
+        font-size: 14px;
+      }
+      button {
+        width: 100%;
+        margin-top: 10px;
+      }
+      .pomodoro div {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+      }
+      .routine, .pomodoro, .study-table, .notes-section, .productivity-stats {
+        padding: 15px;
+      }
+    }
+
+        /* Body and Background */
+        body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(270deg, #0f0c29, #302b63, #24243e, #3b3b98, #5f2c82);
+      background-size: 1200% 1200%;
+      margin: 0;
+      padding: 20px;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      animation: moveBackground 8s ease infinite, fadeInBody 1.5s ease-in;
+    }
+
+    #backToTop svg {
+      position: relative;
+      top: 1px;
+      right: 6px;
+    }
+
+
+    .custom-footer {
+  background: #1b1b2f;
+  border-top: 1px solid #6c63ff;
+  padding: 20px 10px 10px;
+  text-align: center;
+  margin-top: 60px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 -2px 10px rgba(108, 99, 255, 0.2);
+}
+
+.footer-content {
+  margin-bottom: 10px;
+}
+
+.footer-content p {
+  margin: 0 0 10px;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.footer-icons a {
+  margin: 0 10px;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.footer-icons img {
+  width: 30px;
+  height: 30px;
+  filter: brightness(1.2);
+}
+
+.footer-icons a:hover {
+  transform: scale(1.2);
+}
+  </style>
+
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+
+<body>
+
+<!-- Floating Stars -->
+<div id="stars"></div>
+
+<!-- Header -->
+<header>
+  <lottie-player 
+    src="AnimationDev.json" 
+    background="transparent" 
+    speed="1" 
+    style="width: 250px; height: 250px; margin: auto; display: block;"
+    loop 
+    autoplay>
+  </lottie-player>
+  <h1>My Coding Study Plan</h1>
+</header>
+
+<section class="routine">
+  <h2>Daily Routine</h2>
+  <ul>
+    <li><strong>Warm-Up:</strong> 10 minutes (Review previous kata)</li>
+    <li><strong>Intermediate Kata:</strong> 45 minutes (New problem solving)</li>
+    <li><strong>Review and Refactor:</strong> 20 minutes</li>
+    <li><strong>Data Structures/Algorithms Focus:</strong> 15 minutes</li>
+  </ul>
+</section>
+
+<section class="pomodoro" style="text-align:center;">
+  <h2>Pomodoro Timer</h2>
+  <div id="timer">25:00</div>
+  <div style="margin-top: 20px;">
+    <button onclick="startPomodoro()">Start</button>
+    <button onclick="resetPomodoro()">Reset</button>
+    <button onclick="startShortBreak()">Short Break</button>
+    <button onclick="startLongBreak()">Long Break</button>
+  </div>
+  <p style="margin-top: 20px;">Pomodoro Sessions Completed: <span id="sessionCount">0</span></p>
+  <audio id="endSound" src="https://www.soundjay.com/buttons/beep-07.wav" preload="auto"></audio>
+</section>
+
+<section class="study-table">
+  <h2>Editable Study Table</h2>
+  <table id="studyTable">
+    <thead>
+      <tr>
+        <th>Done</th>
+        <th>Time Slot</th>
+        <th>Activity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="checkbox" class="progress-checkbox" onchange="updateProgress()"/></td>
+        <td contenteditable="true">08:00 - 08:10</td>
+        <td contenteditable="true">Warm-up (Review)</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" class="progress-checkbox" onchange="updateProgress()"/></td>
+        <td contenteditable="true">08:10 - 08:55</td>
+        <td contenteditable="true">Solve Intermediate Kata</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" class="progress-checkbox" onchange="updateProgress()"/></td>
+        <td contenteditable="true">08:55 - 09:15</td>
+        <td contenteditable="true">Review/Refactor</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" class="progress-checkbox" onchange="updateProgress()"/></td>
+        <td contenteditable="true">09:15 - 09:30</td>
+        <td contenteditable="true">Data Structures Focus</td>
+      </tr>
+    </tbody>
+  </table>
+  <button onclick="addRow()">Add Row</button>
+  <button onclick="deleteRow()">Delete Last Row</button>
+  <button onclick="saveTable()">Save Changes</button>
+  <button onclick="resetTable()">Reset Table</button>
+</section>
+
+<section class="notes-section">
+  <h2>Notes</h2>
+  <textarea placeholder="Write your notes, blockers, or ideas here..."></textarea>
+</section>
+
+<section class="productivity-stats">
+  <h2>Productivity Progress</h2>
+  <p>Completed Tasks:</p>
+  <div id="productivityBar">
+    <div id="progressFill"></div>
+  </div>
+</section>
+
+<script>
+let pomodoroInterval;
+let totalSeconds = 1500;
+let sessionCount = 0;
+
+function updateTimer() {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  document.getElementById("timer").innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function startPomodoro() {
+  clearInterval(pomodoroInterval);
+  totalSeconds = 1500;
+  updateTimer();
+  pomodoroInterval = setInterval(() => {
+    if (totalSeconds > 0) {
+      totalSeconds--;
+      updateTimer();
+    } else {
+      clearInterval(pomodoroInterval);
+      sessionCount++;
+      document.getElementById("sessionCount").innerText = sessionCount;
+      document.getElementById("endSound").play();
+      alert("\u23F0 Pomodoro session completed! Time for a break!");
+    }
+  }, 1000);
+}
+
+function resetPomodoro() {
+  clearInterval(pomodoroInterval);
+  totalSeconds = 1500;
+  updateTimer();
+}
+
+function startShortBreak() {
+  clearInterval(pomodoroInterval);
+  totalSeconds = 300;
+  updateTimer();
+  pomodoroInterval = setInterval(() => {
+    if (totalSeconds > 0) {
+      totalSeconds--;
+      updateTimer();
+    } else {
+      clearInterval(pomodoroInterval);
+      document.getElementById("endSound").play();
+      alert("\u2615 Short break over. Ready to focus again?");
+    }
+  }, 1000);
+}
+
+function startLongBreak() {
+  clearInterval(pomodoroInterval);
+  totalSeconds = 900;
+  updateTimer();
+  pomodoroInterval = setInterval(() => {
+    if (totalSeconds > 0) {
+      totalSeconds--;
+      updateTimer();
+    } else {
+      clearInterval(pomodoroInterval);
+      document.getElementById("endSound").play();
+      alert("\ud83e\uddd8 Long break finished. Time to get back to work!");
+    }
+  }, 1000);
+}
+
+function saveTable() {
+  const table = document.getElementById("studyTable");
+  let tableData = [];
+  for (let i = 1; i < table.rows.length; i++) {
+    let time = table.rows[i].cells[1].innerText;
+    let activity = table.rows[i].cells[2].innerText;
+    tableData.push({ time, activity });
+  }
+  localStorage.setItem("studyPlan", JSON.stringify(tableData));
+  alert("\u2705 Study Plan Saved!");
+}
+
+function addRow() {
+  const table = document.getElementById("studyTable").getElementsByTagName("tbody")[0];
+  const newRow = table.insertRow();
+  newRow.innerHTML = `
+    <td><input type="checkbox" class="progress-checkbox" onchange="updateProgress()"/></td>
+    <td contenteditable="true">New Time</td>
+    <td contenteditable="true">New Activity</td>
+  `;
+}
+
+function deleteRow() {
+  const table = document.getElementById("studyTable").getElementsByTagName("tbody")[0];
+  if (table.rows.length > 0) table.deleteRow(-1);
+}
+
+function resetTable() {
+  if (confirm("Are you sure you want to reset the table?")) {
+    localStorage.removeItem("studyPlan");
+    location.reload();
+  }
+}
+
+function updateProgress() {
+  const checkboxes = document.querySelectorAll(".progress-checkbox");
+  const checked = Array.from(checkboxes).filter(c => c.checked).length;
+  const total = checkboxes.length;
+  const percent = total ? (checked / total) * 100 : 0;
+  document.getElementById("progressFill").style.width = percent + "%";
+}
+
+window.onload = function () {
+  const savedData = JSON.parse(localStorage.getItem("studyPlan"));
+  if (savedData) {
+    const table = document.getElementById("studyTable");
+    const tbody = table.getElementsByTagName("tbody")[0];
+    tbody.innerHTML = "";
+    for (let i = 0; i < savedData.length; i++) {
+      const newRow = tbody.insertRow();
+      newRow.innerHTML = `
+        <td><input type="checkbox" class="progress-checkbox" onchange="updateProgress()"/></td>
+        <td contenteditable="true">${savedData[i].time}</td>
+        <td contenteditable="true">${savedData[i].activity}</td>
+      `;
+    }
+  }
+  updateTimer();
+  updateProgress();
+};
+</script>
+
+<button id="backToTop" title="Go to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+      <path d="M12 2L5 9h5v9h4V9h5z"/>
+    </svg>
+  </button>
+
+<script>
+// Back to Top button
+let backToTop = document.getElementById("backToTop");
+
+window.onscroll = function() {
+  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    backToTop.style.display = "block";
+  } else {
+    backToTop.style.display = "none";
+  }
+};
+
+backToTop.onclick = function() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+};
+</script>
+
+<footer class="custom-footer">
+    <div class="footer-content">
+      <p>Made with 💻 and ☕ by Mohammed Al-Maflehi &copy; 2025</p>
+      <div class="footer-icons">
+        <a href="https://github.com/ALMAFLEHI" target="_blank" title="GitHub">
+          <img src="github-color.svg" alt="GitHub" />
+        </a>
+        <a href="https://www.linkedin.com/in/mohammed-al-maflehi-926a28330/" target="_blank" title="LinkedIn">
+          <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" />
+        </a>
+        <a href="https://www.instagram.com/dvils_/" target="_blank" title="Instagram">
+          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" />
+        </a>
+      </div>      
+    </div>
+  </footer>
+  
+
+
+</body>
+</html>
