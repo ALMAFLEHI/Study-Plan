@@ -1,10 +1,7 @@
 # My Coding Study Plan - Personal Side Project
 
-<p align="center">
-  <img src="demo.gif" alt="MyCodingStudyPlan - Demo" />
-  <br/>
-  <img src="https://iili.io/3Ztct6J.gif" alt="LiveView" />
-</p>
+![Study Plan](demo.gif)
+![Animation](https://iili.io/3Ztct6J.gif)
 
 Welcome to my **Coding Study Plan**! This is a personal side project that I created for myself to organize my daily coding study routine in a fun and interactive way. 
 
