@@ -1,5 +1,7 @@
 # My Coding Study Plan - Personal Side Project
 
+- [Live View](https://iili.io/3Ztct6J.gif)  
+
 Welcome to my **Coding Study Plan**! This is a personal side project that I created for myself to organize my daily coding study routine in a fun and interactive way. 
 
 The project is designed with a clean and modern interface, featuring a Pomodoro timer, editable study tables, progress tracking, and many cool animations to enhance the experience.
@@ -15,7 +17,6 @@ I developed this to keep track of my study sessions, improve my productivity, an
 - **Pomodoro Timer:** Helps you track your study and break times.
 - **Editable Study Table:** Plan your daily study activities.
 - **Productivity Progress Bar:** Visualizes your progress throughout the day.
-- **Animations:** Fun and interactive animations to make your study sessions more exciting.
 
 ---
 
